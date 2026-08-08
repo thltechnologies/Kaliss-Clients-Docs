@@ -1,0 +1,12 @@
+# Sphinx build output
+_build/
+_static/*
+!_static/.gitkeep
+
+# Python artifacts
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+env/
+venv/
