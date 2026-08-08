@@ -15,3 +15,7 @@ python:
 
 sphinx:
   configuration: conf.py
+
+# Activer l'exportation automatique au format PDF sur Read the Docs
+formats:
+  - pdf

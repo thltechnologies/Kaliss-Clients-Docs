@@ -45,3 +45,18 @@ myst_enable_extensions = [
     "deflist",
     "fieldlist",
 ]
+
+# LaTeX / PDF export configuration
+latex_elements = {
+    'papersize': 'a4paper',
+    'pointsize': '11pt',
+    'preamble': r'''
+        \usepackage{microtype}
+    ''',
+}
+
+latex_documents = [
+    ('index', 'Kaliss_Clients_Documentation.tex', 'Kaliss Clients Documentation',
+     'Kaliss Core Banking Team', 'manual'),
+]
+
