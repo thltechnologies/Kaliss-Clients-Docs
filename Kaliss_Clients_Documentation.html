@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kaliss Core Banking - Documentation Client</title>
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #1e3a8a;
+            --primary-light: #3b82f6;
+            --primary-dark: #0f172a;
+            --accent: #0d9488;
+            --bg-body: #f8fafc;
+            --bg-card: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --sidebar-width: 280px;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--bg-body);
+            color: var(--text-main);
+            line-height: 1.6;
+            display: flex;
+            min-height: 100vh;
+        }
+
+        /* Sidebar Navigation */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: var(--primary-dark);
+            color: #ffffff;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            left: 0;
+            overflow-y: auto;
+            padding: 24px 16px;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 4px 0 12px rgba(0, 0, 0, 0.05);
+            z-index: 100;
+        }
+
+        .sidebar-brand {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding-bottom: 20px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            margin-bottom: 24px;
+        }
+
+        .brand-icon {
+            width: 40px;
+            height: 40px;
+            background: linear-gradient(135deg, #0d9488, #3b82f6);
+            border-radius: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Outfit', sans-serif;
+            font-weight: 700;
+            font-size: 20px;
+            color: white;
+            box-shadow: 0 4px 10px rgba(13, 148, 136, 0.3);
+        }
+
+        .brand-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 18px;
+            font-weight: 700;
+            letter-spacing: -0.3px;
+        }
+
+        .brand-subtitle {
+            font-size: 11px;
+            color: #94a3b8;
+            text-transform: uppercase;
+            letter-spacing: 0.8px;
+        }
+
+        .nav-section {
+            margin-bottom: 24px;
+        }
+
+        .nav-title {
+            font-size: 11px;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #94a3b8;
+            margin-bottom: 10px;
+            padding-left: 12px;
+            font-weight: 600;
+        }
+
+        .nav-list {
+            list-style: none;
+        }
+
+        .nav-link {
+            display: flex;
+            align-items: center;
+            padding: 10px 12px;
+            color: #cbd5e1;
+            text-decoration: none;
+            font-size: 14px;
+            font-weight: 500;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            margin-bottom: 4px;
+        }
+
+        .nav-link:hover, .nav-link.active {
+            background: rgba(255, 255, 255, 0.1);
+            color: #ffffff;
+        }
+
+        .nav-link.active {
+            background: linear-gradient(90deg, rgba(59, 130, 246, 0.25), transparent);
+            border-left: 3px solid var(--primary-light);
+            color: #ffffff;
+        }
+
+        /* Main Content */
+        .main-wrapper {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header.top-header {
+            background: #ffffff;
+            border-bottom: 1px solid var(--border);
+            padding: 16px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 90;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.02);
+        }
+
+        .header-title {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            font-weight: 700;
+            color: var(--primary-dark);
+        }
+
+        .header-actions {
+            display: flex;
+            gap: 12px;
+        }
+
+        .btn {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 16px;
+            font-size: 13px;
+            font-weight: 600;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            background: #ffffff;
+            color: var(--text-main);
+            cursor: pointer;
+            text-decoration: none;
+            transition: all 0.2s;
+        }
+
+        .btn:hover {
+            background: #f1f5f9;
+            border-color: #cbd5e1;
+        }
+
+        .btn-primary {
+            background: var(--primary-light);
+            color: #ffffff;
+            border: none;
+        }
+
+        .btn-primary:hover {
+            background: #2563eb;
+        }
+
+        .content {
+            padding: 40px;
+            max-width: 1000px;
+        }
+
+        section.doc-section {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 12px;
+            padding: 32px;
+            margin-bottom: 32px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.02);
+        }
+
+        h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 28px;
+            color: var(--primary-dark);
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 20px;
+            color: var(--primary);
+            margin: 24px 0 12px 0;
+            border-bottom: 2px solid #f1f5f9;
+            padding-bottom: 8px;
+        }
+
+        h3 {
+            font-size: 16px;
+            color: var(--text-main);
+            margin: 18px 0 8px 0;
+        }
+
+        p {
+            margin-bottom: 14px;
+            color: #475569;
+            font-size: 15px;
+        }
+
+        ul, ol {
+            margin-left: 20px;
+            margin-bottom: 16px;
+            color: #475569;
+        }
+
+        li {
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 20px;
+            font-size: 12px;
+            font-weight: 600;
+            background: #e0f2fe;
+            color: #0369a1;
+        }
+
+        .badge-success {
+            background: #dcfce7;
+            color: #15803d;
+        }
+
+        .badge-warning {
+            background: #fef3c7;
+            color: #b45309;
+        }
+
+        .grid-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+            gap: 16px;
+            margin: 20px 0;
+        }
+
+        .card {
+            background: #f8fafc;
+            border: 1px solid var(--border);
+            border-radius: 10px;
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+
+        .card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        .card-icon {
+            font-size: 24px;
+            margin-bottom: 10px;
+        }
+
+        .card-title {
+            font-weight: 600;
+            font-size: 16px;
+            color: var(--primary-dark);
+            margin-bottom: 6px;
+        }
+
+        .card-desc {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+
+        /* Print styles */
+        @media print {
+            .sidebar, .top-header {
+                display: none;
+            }
+            .main-wrapper {
+                margin-left: 0;
+            }
+            .content {
+                padding: 0;
+                max-width: 100%;
+            }
+            section.doc-section {
+                border: none;
+                box-shadow: none;
+                padding: 0;
+                margin-bottom: 24px;
+                page-break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+        <div class="sidebar-brand">
+            <div class="brand-icon">K</div>
+            <div>
+                <div class="brand-title">Kaliss Banking</div>
+                <div class="brand-subtitle">Doc Client v2.0</div>
+            </div>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-title">Présentation</div>
+            <ul class="nav-list">
+                <li><a href="#intro" class="nav-link active">Vue d'Ensemble</a></li>
+                <li><a href="#onboarding" class="nav-link">Intégration Client</a></li>
+            </ul>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-title">Modules Métier</div>
+            <ul class="nav-list">
+                <li><a href="#kyc" class="nav-link">Clientèle & KYC</a></li>
+                <li><a href="#accounts" class="nav-link">Comptes & Caisse</a></li>
+                <li><a href="#loans" class="nav-link">Crédits & Prêts</a></li>
+                <li><a href="#reporting" class="nav-link">Reporting & PDFs</a></li>
+            </ul>
+        </div>
+
+        <div class="nav-section">
+            <div class="nav-title">Administration</div>
+            <ul class="nav-list">
+                <li><a href="#roles" class="nav-link">Guides par Rôle</a></li>
+                <li><a href="#security" class="nav-link">Sécurité & Audit</a></li>
+            </ul>
+        </div>
+    </aside>
+
+    <!-- Main Content Wrapper -->
+    <div class="main-wrapper">
+        <header class="top-header">
+            <div class="header-title">Documentation Fonctionnelle Client</div>
+            <div class="header-actions">
+                <button class="btn" onclick="window.print()">🖨️ Imprimer / PDF</button>
+            </div>
+        </header>
+
+        <main class="content">
+
+            <!-- Section 1: Introduction -->
+            <section id="intro" class="doc-section">
+                <h1>🏦 Présentation Générale de la Plateforme Kaliss</h1>
+                <p>La plateforme <strong>Kaliss Core Banking</strong> est une solution bancaire moderne, sécurisée et évolutive conçue pour la gestion complète des opérations bancaires des banques et institutions de microfinance.</p>
+
+                <div class="grid-cards">
+                    <div class="card">
+                        <div class="card-icon">⚡</div>
+                        <div class="card-title">Opérations Rapides</div>
+                        <div class="card-desc">Saisies fluides et sécurisées des dépôts, retraits et virements au guichet.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🛡️</div>
+                        <div class="card-title">KYC Intégré</div>
+                        <div class="card-desc">Suivi rigoureux des profils clients, pièces justificatives et conformité.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-icon">🎨</div>
+                        <div class="card-title">White-Labeling</div>
+                        <div class="card-desc">Portail entièrement personnalisé aux couleurs et logos de votre établissement.</div>
+                    </div>
+                </div>
+
+                <h2>Modèle Multi-Client (Multi-Tenant)</h2>
+                <p>Chaque institution cliente bénéficie de :</p>
+                <ul>
+                    <li><strong>Un accès web dédié</strong> (domaine propre ou sous-domaine institutionnel).</li>
+                    <li><strong>Un thème visuel personnalisé</strong> (logo d'en-tête, reçus, palette de couleurs).</li>
+                    <li><strong>Une base de données hermétique</strong> garantissant la confidentialité absolue.</li>
+                    <li><strong>Des règles métier configurables</strong> (découverts, frais de tenue de compte, taux d'intérêt).</li>
+                </ul>
+            </section>
+
+            <!-- Section 2: Onboarding -->
+            <section id="onboarding" class="doc-section">
+                <h1>🚀 Guide d'Intégration & Configuration Client</h1>
+                <p>Mise en service rapide d'un nouvel établissement sans interruption d'activité.</p>
+
+                <h2>1. Personnalisation Visuelle (Branding)</h2>
+                <ul>
+                    <li><strong>Logo Principal</strong> : Affiché sur l'écran de connexion et l'en-tête.</li>
+                    <li><strong>Impression des Documents</strong> : Logo et coordonnées en-tête sur reçus et extraits de compte PDF.</li>
+                    <li><strong>Couleur Primaire</strong> : Application dynamique de la charte graphique de l'institution.</li>
+                </ul>
+
+                <h2>2. Paramétrage des Règles Métier</h2>
+                <p>Depuis l'interface d'administration (<code>/configuration</code>) :</p>
+                <ul>
+                    <li>Autorisations de découverts et frais mensuels.</li>
+                    <li>Plafonds de dépôts et retraits sans sur-validation.</li>
+                    <li>Règles de remboursement automatique des prêts.</li>
+                </ul>
+            </section>
+
+            <!-- Section 3: KYC -->
+            <section id="kyc" class="doc-section">
+                <h1>👤 Gestion de la Clientèle & Dossiers KYC</h1>
+                <p>Le module KYC (Know Your Customer) centralise la gestion des profils clients physiques et moraux.</p>
+                
+                <h2>Fonctionnalités Clés</h2>
+                <ul>
+                    <li><strong>Fiche Client</strong> : État civil, adresse, téléphone, e-mail et numéro de client unique.</li>
+                    <li><strong>Pièces Justificatives</strong> : Numérisation des CNI, passeports, permis et justificatifs de domicile.</li>
+                    <li><strong>Alerte d'Expiration</strong> : Notification automatique à l'approche de l'expiration d'une pièce d'identité.</li>
+                </ul>
+            </section>
+
+            <!-- Section 4: Accounts -->
+            <section id="accounts" class="doc-section">
+                <h1>💳 Gestion des Comptes & Opérations de Caisse</h1>
+                
+                <h2>Types de Comptes Supportés</h2>
+                <div class="grid-cards">
+                    <div class="card">
+                        <div class="card-title">Compte Courant</div>
+                        <div class="card-desc">Opérations au quotidien avec possibilité d'autorisation de découvert.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Compte d'Épargne</div>
+                        <div class="card-desc">Épargne rémunérée avec calcul d'intérêts périodiques.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Dépôt à Terme (DAT)</div>
+                        <div class="card-desc">Placement bloqué sur durée définie avec taux préférentiel.</div>
+                    </div>
+                </div>
+
+                <h2>Opérations au Guichet</h2>
+                <ul>
+                    <li><strong>Dépôts & Retraits</strong> : Saisie instantanée avec impression du reçu sécurisé.</li>
+                    <li><strong>Virements Inter-comptes</strong> : Transfert de fond instantané entre comptes.</li>
+                </ul>
+            </section>
+
+            <!-- Section 5: Loans -->
+            <section id="loans" class="doc-section">
+                <h1>📊 Gestion des Crédits & Prêts</h1>
+                <p>Circuit complet d'instruction, d'approbation et d'amortissement des prêts.</p>
+                
+                <h2>Cycle de Vie d'un Prêt</h2>
+                <ol>
+                    <li><strong>Instruction</strong> : Saisie de la demande et calcul de l'échéancier prévisionnel.</li>
+                    <li><strong>Comité de Crédit</strong> : Soumission et approbation motivée par le superviseur.</li>
+                    <li><strong>Déblocage</strong> : Créditement automatique du compte courant du client.</li>
+                    <li><strong>Remboursement</strong> : Prélèvement automatique des échéances et suivi des impayés.</li>
+                </ol>
+            </section>
+
+            <!-- Section 6: Reporting -->
+            <section id="reporting" class="doc-section">
+                <h1>📄 Reporting & Documents PDF</h1>
+                <ul>
+                    <li><strong>Tableau de Bord Caisse</strong> : Suivi des flux journaliers et arrêt de caisse.</li>
+                    <li><strong>Relevés de Compte PDF</strong> : Impression d'extraits officiels personnalisés avec en-tête et filigrane de l'institution.</li>
+                    <li><strong>Tableaux d'Amortissement</strong> : Grille contractuelle imprimable pour chaque contrat de prêt.</li>
+                </ul>
+            </section>
+
+            <!-- Section 7: Roles -->
+            <section id="roles" class="doc-section">
+                <h1>👥 Guides Utilisateur par Rôle</h1>
+                
+                <div class="grid-cards">
+                    <div class="card">
+                        <div class="card-title">Guichetier / Caissier</div>
+                        <div class="card-desc">Saisie des dépôts, retraits, reçus de caisse et arrêt de caisse.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Gestionnaire de Crédit</div>
+                        <div class="card-desc">Mise à jour KYC, montage des dossiers de prêt et contrats.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Chef d'Agence</div>
+                        <div class="card-desc">Approbation des prêts et validation des opérations hors plafond.</div>
+                    </div>
+                    <div class="card">
+                        <div class="card-title">Administrateur</div>
+                        <div class="card-desc">Gestion des utilisateurs, branding et paramètres de l'établissement.</div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 8: Security -->
+            <section id="security" class="doc-section">
+                <h1>🔒 Sécurité & Traçabilité</h1>
+                <ul>
+                    <li><strong>Isolation des Données (Multi-tenant)</strong> : Cloisonnement strict des données entre clients.</li>
+                    <li><strong>Journal d'Audit (Audit Log)</strong> : Enregistrement infalsifiable de chaque opération avec horodatage et adresse IP.</li>
+                    <li><strong>Sauvegardes Automatiques</strong> : Réplication et sauvegarde quotidienne des bases de données.</li>
+                </ul>
+            </section>
+
+        </main>
+    </div>
+
+</body>
+</html>
